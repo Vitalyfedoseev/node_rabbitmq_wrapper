@@ -12,15 +12,13 @@ function send (queue, msg) {
             }
 
             channel.assertQueue(queue, {
-                durable: false
+                durable: true
             });
             channel.sendToQueue(queue, Buffer.from(msg));
 
-            console.log(" [x] Sent %s", msg);
         });
         setTimeout(function() {
             connection.close();
-            process.exit(0);
         }, 500);
     });
 }

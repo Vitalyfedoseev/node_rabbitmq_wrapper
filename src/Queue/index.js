@@ -1,5 +1,4 @@
 const Send = require('./send');
-const Receive = require('./receive');
 const Worker = require('./worker');
 
 /**
@@ -8,7 +7,7 @@ const Worker = require('./worker');
 class Queue {
     constructor() {
         this.Send = Send;
-        this.Receive = Receive;
+        this.Get = Get;
         this.Worker = Worker;
     }
 
@@ -32,29 +31,12 @@ class Queue {
      *
      * @param queue
      * @param callback
-     * @param count
-     * @returns {{connect?: function(*=, *=, *): void, credentials?: {plain?: function(*=, *=): {password: *, response: function(): *, mechanism: string, username: *}, amqplain?: function(*=, *=): {password: *, response: function(): *, mechanism: string, username: *}, external?: function(): {response: function(): *, mechanism: string}}, IllegalOperationError?: function(*, *): void}|boolean}
-     */
-    receive (queue, callback, count) {
-        let result;
-        try {
-            result = this.Receive(queue);
-        } catch (error) {
-            result = false;
-        }
-        return result
-    }
-
-    /**
-     *
-     * @param queue
-     * @param callback
      * @returns {{connect?: function(*=, *=, *): void, credentials?: {plain?: function(*=, *=): {password: *, response: function(): *, mechanism: string, username: *}, amqplain?: function(*=, *=): {password: *, response: function(): *, mechanism: string, username: *}, external?: function(): {response: function(): *, mechanism: string}}, IllegalOperationError?: function(*, *): void}|boolean}
      */
     worker (queue, callback) {
         let result;
         try {
-            result = this.Worker(queue);
+            result = this.Worker(queue, callback);
         } catch (error) {
             result = false;
         }
