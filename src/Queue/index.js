@@ -7,7 +7,6 @@ const Worker = require('./worker');
 class Queue {
     constructor() {
         this.Send = Send;
-        this.Get = Get;
         this.Worker = Worker;
     }
 
