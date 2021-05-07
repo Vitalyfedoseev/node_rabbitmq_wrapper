@@ -1,5 +1,4 @@
 const amqp = require('amqplib/callback_api');
-
 const config = require('./config');
 
 function worker (queue, callback) {
@@ -7,14 +6,13 @@ function worker (queue, callback) {
         connection.createChannel(function(error, channel) {
 
             channel.assertQueue(queue, {
-                durable: true
+                durable: true, noAck: false
             });
             channel.prefetch(1);
             channel.consume(queue, function(msg) {
                 let secs = msg.content.toString().split('.').length - 1;
                 callback(msg.content.toString()); // handler
                 setTimeout(function() {
-                    console.log(" [x] Done");
                     channel.ack(msg);
                 }, secs * 1000);
             }, {
@@ -26,3 +24,4 @@ function worker (queue, callback) {
 }
 
 module.exports = worker;
+
